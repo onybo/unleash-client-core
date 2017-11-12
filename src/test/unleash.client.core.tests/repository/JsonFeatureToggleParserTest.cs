@@ -16,7 +16,7 @@ namespace Olav.Unleash.Client.Core.Tests.Repository
             var content = File.ReadAllText("resources/features-v1.json");
             var toggleCollection = JsonToggleParser.FromJson(content);
 
-            Assert.Equal(toggleCollection.Features.Count(), 3);
+            Assert.Equal(3, toggleCollection.Features.Count());
             Assert.True(toggleCollection.GetToggle("featureX").IsEnabled);
         }
 
@@ -26,7 +26,7 @@ namespace Olav.Unleash.Client.Core.Tests.Repository
             var content = File.ReadAllText("resources/features-v0.json");
             var toggleCollection = JsonToggleParser.FromJson(content);
 
-            Assert.Equal(toggleCollection.Features.Count(), 3);
+            Assert.Equal(3, toggleCollection.Features.Count());
             Assert.True(toggleCollection.GetToggle("featureX").IsEnabled);
         }
 
@@ -37,9 +37,9 @@ namespace Olav.Unleash.Client.Core.Tests.Repository
             var toggleCollection = JsonToggleParser.FromJson(content);
             var featureY = toggleCollection.GetToggle("featureY");
 
-            Assert.Equal(featureY.Strategies.Count(), 1);
-            Assert.Equal(featureY.Strategies.First().Name, "baz");
-            Assert.Equal(featureY.Strategies.First().Parameters["foo"], "bar");
+            Assert.Single(featureY.Strategies);
+            Assert.Equal("baz", featureY.Strategies.First().Name);
+            Assert.Equal("bar", featureY.Strategies.First().Parameters["foo"]);
         }
 
         [Fact]
@@ -50,67 +50,59 @@ namespace Olav.Unleash.Client.Core.Tests.Repository
             var featureY = toggleCollection.GetToggle("featureY");
 
             Assert.False(featureY.IsEnabled);
-            Assert.Equal(featureY.Strategies.Count(), 1);
-            Assert.Equal(featureY.Strategies.First().Name, "baz");
-            Assert.Equal(featureY.Strategies.First().Parameters["foo"], "bar");
+            Assert.Single(featureY.Strategies);
+            Assert.Equal("baz", featureY.Strategies.First().Name);
+            Assert.Equal("bar", featureY.Strategies.First().Parameters["foo"]);
         }
 
-        // @Test
-        // public void should_deserialize_with_multiple_strategies() throws IOException {
-        //     Reader content = getFileReader("/features-v1.json");
-        //     ToggleCollection toggleCollection = JsonToggleParser.fromJson(content);
-        //     FeatureToggle feature = toggleCollection.getToggle("featureZ");
+        [Fact]
+        public void should_deserialize_with_multiple_strategies() 
+        {
+            var content = File.ReadAllText("resources/features-v1.json");
 
-        //     assertThat(feature.getStrategies().size(), is(2));
-        //     assertThat(feature.getStrategies().get(1).getName(), is("hola"));
-        //     assertThat(feature.getStrategies().get(1).getParameters().get("name"), is("val"));
-        // }
+            var toggleCollection = JsonToggleParser.FromJson(content);
+            var featureZ = toggleCollection.GetToggle("featureZ");
 
-        // @Test
-        // public void should_throw() throws IOException {
-        //     Reader content = getFileReader("/empty.json");
-        //     try {
-        //         JsonToggleParser.fromJson(content);
-        //     } catch (IllegalStateException e) {
-        //         assertTrue("Expected IllegalStateException", e instanceof IllegalStateException);
-        //     }
-        // }
+            Assert.True(featureZ.IsEnabled);
+            Assert.Equal(2, featureZ.Strategies.Count());
+            Assert.Equal("hola", featureZ.Strategies.ToArray()[1].Name);
+            Assert.Equal("val", featureZ.Strategies.ToArray()[1].Parameters["name"]);
+        }
 
-        // @Test
-        // public void should_throw_on_mission_features() throws IOException {
-        //     Reader content = getFileReader("/empty-v1.json");
-        //     try {
-        //         JsonToggleParser.fromJson(content);
-        //     } catch (IllegalStateException e) {
-        //         assertTrue("Expected IllegalStateException", e instanceof IllegalStateException);
-        //     }
-        // }
+        [Fact]
+        public void should_throw()
+        {
+            var content = File.ReadAllText("resources/empty.json");
+            Assert.Throws<ArgumentException>(() => JsonToggleParser.FromJson(content));
+        }
 
-        // @Test
-        // public void should_deserialize_empty_litst_of_toggles() throws IOException {
-        //     Reader content = getFileReader("/features-v1-empty.json");
-        //     ToggleCollection toggleCollection = JsonToggleParser.fromJson(content);
+        [Fact]
+        public void should_throw_on_mission_features()
+        {
+            var content = File.ReadAllText("resources/empty-v1.json");
+            Assert.Throws<Exception>(() => JsonToggleParser.FromJson(content));
+        }
 
-        //     assertThat(toggleCollection.getFeatures().size(), is(0));
-        // }
+        [Fact]
+        public void should_deserialize_empty_litst_of_toggles() 
+        {
+            var content = File.ReadAllText("resources/features-v1-empty.json");
+            var toggleCollection = JsonToggleParser.FromJson(content);
 
-        // @Test
-        // public void should_deserialize_old_format() throws IOException {
-        //     Reader content = getFileReader("/features-v0.json");
-        //     ToggleCollection toggleCollection = JsonToggleParser.fromJson(content);
-        //     FeatureToggle featureY = toggleCollection.getToggle("featureY");
+            Assert.Empty(toggleCollection.Features);
+        }
 
-        //     assertThat(toggleCollection.getFeatures().size(), is(3));
-        //     assertThat(featureY.getStrategies().size(), is(1));
-        //     assertThat(featureY.getStrategies().get(0).getName(), is("baz"));
-        //     assertThat(featureY.getStrategies().get(0).getParameters().get("foo"), is("bar"));
-        // }
+        [Fact]
+        public void should_deserialize_old_format()
+        {
+            var content = File.ReadAllText("resources/features-v0.json");
+            var toggleCollection = JsonToggleParser.FromJson(content);
+            var featureY = toggleCollection.GetToggle("featureY");
 
-        // private Reader getFileReader(string filename) throws IOException {
-        //     InputStream in = this.getClass().getResourceAsStream(filename);
-        //     InputStreamReader reader = new InputStreamReader(in);
-        //     return new BufferedReader(reader);
-        // }
-
+            Assert.Equal(3, toggleCollection.Features.Count());
+            Assert.Single(featureY.Strategies);
+            Assert.Equal("baz", featureY.Strategies.First().Name);
+            Assert.Equal("bar", featureY.Strategies.First().Parameters["foo"]);
+        }
     }
 }

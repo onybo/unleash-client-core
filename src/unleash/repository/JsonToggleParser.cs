@@ -17,6 +17,8 @@ namespace Olav.Unleash.Repository
     {
         public static ToggleCollection FromJson(string jsonString)
         {
+            if (string.IsNullOrWhiteSpace(jsonString))
+                throw new ArgumentException("some json is required", nameof(jsonString));
             var json = JsonConvert.DeserializeObject<JObject>(jsonString);
             if (!json.TryGetValue("version", out var version))
             {
@@ -36,7 +38,7 @@ namespace Olav.Unleash.Repository
             if (!json.TryGetValue("features", out var featureTogglesToken))
             {
                 Log.Warning("Features not found in json");
-                return null;
+                throw new Exception("Features in json were expected");
             }
             var featureToggles = new List<FeatureToggle>();
             foreach(var token in featureTogglesToken)
@@ -58,7 +60,7 @@ namespace Olav.Unleash.Repository
             if (!json.TryGetValue("features", out var featureTogglesToken))
             {
                 Log.Warning("Features not found in json");
-                return null;
+                throw new Exception("Features in json were expected");
             }
 
             return new ToggleCollection(featureTogglesToken.ToObject<FeatureToggle[]>());
