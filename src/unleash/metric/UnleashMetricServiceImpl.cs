@@ -31,7 +31,7 @@ namespace Olav.Unleash.Metric
             _metricsInterval = unleashConfig.SendMetricsInterval;
             _unleashMetricsSender = unleashMetricsSender;
 
-            executor.SetInterval((e) => SendMetrics(e), _metricsInterval, _metricsInterval);
+            executor.SetInterval(s => SendMetrics(s), _metricsInterval, _metricsInterval);
         }
 
         public async Task Register(HashSet<string> strategies)

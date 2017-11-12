@@ -31,6 +31,6 @@ namespace Olav.Unleash.Repository
 
         internal IEnumerable<FeatureToggle> Features => _features;
 
-        internal FeatureToggle GetToggle(string name) => _cache[name];
+        internal FeatureToggle GetToggle(string name) => _cache.ContainsKey(name) ?  _cache[name] : null;
     }
 }
