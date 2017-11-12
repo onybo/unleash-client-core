@@ -11,6 +11,10 @@ namespace Olav.Unleash.Repository
         [JsonIgnore]
         private readonly Dictionary<string, FeatureToggle> _cache;
 
+        public ToggleCollection()
+        {            
+        }
+        
         internal ToggleCollection(IEnumerable<FeatureToggle> features)
         {
             _features = EnsureNotNull(features);
