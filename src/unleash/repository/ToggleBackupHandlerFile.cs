@@ -21,11 +21,8 @@ namespace Olav.Unleash.Repository
             Log.Information("Unleash will try to load feature toggle states from temporary backup");
             try
             {
-                using (var file = File.OpenText(_backupFile))
-                {
-                    var serializer = new JsonSerializer();
-                    return (ToggleCollection)serializer.Deserialize(file, typeof(ToggleCollection));
-                }
+                var json = File.ReadAllText(_backupFile);
+                return JsonToggleParser.FromJson(json);
             }
             catch (FileNotFoundException)
             {
@@ -71,6 +68,7 @@ namespace Olav.Unleash.Repository
             {
                 using (var writer = new StreamWriter(_backupFile))
                 {
+                    var json = JsonConvert.SerializeObject(toggleCollection);
                     writer.Write(JsonConvert.SerializeObject(toggleCollection));
                 }
             }

@@ -38,7 +38,7 @@ namespace Olav.Unleash.Repository
             if (!json.TryGetValue("features", out var featureTogglesToken))
             {
                 Log.Warning("Features not found in json");
-                throw new Exception("Features in json were expected");
+                return ToggleCollection.EmptyCollection;
             }
             var featureToggles = new List<FeatureToggle>();
             foreach(var token in featureTogglesToken)

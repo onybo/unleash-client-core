@@ -4,8 +4,11 @@ using Newtonsoft.Json;
 namespace Olav.Unleash.Repository
 {
     public sealed class ToggleCollection
-    {
+    {     
+        [JsonProperty(PropertyName = "features")]
         private readonly IEnumerable<FeatureToggle> _features;
+        
+        [JsonProperty]
         private const int version = 1;
 
         [JsonIgnore]
