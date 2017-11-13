@@ -16,6 +16,7 @@ namespace Olav.Unleash.Strategy
 
         public override bool IsEnabled(Dictionary<string, string> parameters) 
         {
+            if (!parameters.ContainsKey(PERCENTAGE)) return false;
             int percentage = StrategyUtils.GetPercentage(parameters[PERCENTAGE]);
             int randomNumber = _random.Next(100) + 1;
             return percentage >= randomNumber;
