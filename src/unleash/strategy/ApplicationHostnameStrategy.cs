@@ -25,7 +25,7 @@ namespace Olav.Unleash.Strategy
 
         public override bool IsEnabled(Dictionary<string, string> parameters) 
         {
-            return parameters.ContainsKey(HOST_NAMES_PARAM) ?
+            return parameters.ContainsKey(HOST_NAMES_PARAM) && parameters[HOST_NAMES_PARAM] != null ?
                 parameters[HOST_NAMES_PARAM]
                     .ToLower()
                     .Split(',')
