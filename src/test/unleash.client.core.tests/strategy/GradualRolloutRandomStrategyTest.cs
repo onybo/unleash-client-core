@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Olav.Unleash.Strategy;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Repository
+namespace Olav.Unleash.Client.Core.Tests.Strategy
 {
-
     public class GradualRolloutRandomStrategyTest
     {
 

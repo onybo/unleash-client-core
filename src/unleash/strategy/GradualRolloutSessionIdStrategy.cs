@@ -21,8 +21,8 @@ namespace Olav.Unleash.Strategy
  */
     public sealed class GradualRolloutSessionIdStrategy : Strategy
     {
-        private const string PERCENTAGE = "percentage";
-        private const string GROUP_ID = "groupId";
+        internal const string PERCENTAGE = "percentage";
+        internal const string GROUP_ID = "groupId";
 
         private const string NAME = "gradualRolloutSessionId";
 
