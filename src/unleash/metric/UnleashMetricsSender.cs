@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -28,13 +29,25 @@ namespace Olav.Unleash.Metric
                 new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
         
+        internal UnleashMetricsSender() : this(
+            new UnleashConfig(
+                new Uri("http://localhost"),
+                new Dictionary<string, string>(),
+                "",
+                "",
+                "",
+                "",
+                0,
+                10,
+                true))
+        {            
+        }
 
         internal UnleashMetricsSender(Util.UnleashConfig unleashConfig)
         {
             _unleashConfig = unleashConfig;
             var urls = unleashConfig.UnleashURLs;
             _baseURL = urls.BaseURL;
-
         }
 
         // static class DateTimeSerializer implements JsonSerializer<LocalDateTime> {
@@ -45,7 +58,7 @@ namespace Olav.Unleash.Metric
         //     };
         // }
 
-        internal async Task RegisterClient(ClientRegistration registration)
+        internal virtual async Task RegisterClient(ClientRegistration registration)
         {
             if (!_unleashConfig.IsDisableMetrics)
             {
@@ -53,7 +66,7 @@ namespace Olav.Unleash.Metric
             }
         }
 
-        internal async Task SendMetrics(ClientMetrics metrics)
+        internal virtual async Task SendMetrics(ClientMetrics metrics)
         {
             if (!_unleashConfig.IsDisableMetrics)
             {
