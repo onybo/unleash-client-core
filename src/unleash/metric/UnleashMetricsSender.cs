@@ -80,7 +80,7 @@ namespace Olav.Unleash.Metric
 
             var request = new HttpRequestMessage(HttpMethod.Post, UnleashURLs.FetchTogglesUri);
             UnleashConfig.SetRequestProperties(request.Headers, _unleashConfig);
-            HttpClient.DefaultRequestHeaders.CacheControl.NoCache = true;
+            request.Headers.Add("Cache-Control", "no-cache"); //  CacheControl.NoCache = true;
             request.Content = new StringContent(JsonConvert.SerializeObject(o), Encoding.UTF8, "application/json");
 
             var result = await HttpClient.SendAsync(request);
