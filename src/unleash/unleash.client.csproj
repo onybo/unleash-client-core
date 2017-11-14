@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/onybo/unleash-client-core.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>asp.net core unleash feature-toggling</PackageTags>
-    <Description />
+    <Description>.Net Core client for Unleash https://github.com/Unleash/unleash </Description>
     <Version>$(SemVer)</Version>
   </PropertyGroup>
 
