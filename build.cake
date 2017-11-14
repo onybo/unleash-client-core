@@ -9,7 +9,7 @@ var buildArtifacts      = Directory("./artifacts/packages");
 
 var isAppVeyor          = AppVeyor.IsRunningOnAppVeyor;
 var version             = AppVeyor.IsRunningOnAppVeyor ?
-                            $"0.0.{BuildSystem.AppVeyor.Environment.Build.Number}" :
+                            $"0.0.{AppVeyor.Environment.Build.Number}" :
                             "1.0.1";
 
 ///////////////////////////////////////////////////////////////////////////////
