@@ -12,9 +12,16 @@ var version             = "0.0.1";
 
 Setup(context =>
 {
-    version = AppVeyor.IsRunningOnAppVeyor ?
-                            $"0.0.{AppVeyor.Environment.Build.Number}" :
-                            "0.0.1";
+    context.Information("hello");
+    if (AppVeyor.IsRunningOnAppVeyor)
+    {
+        context.Information("Running appveyor");
+        context.Information("Build number: " + AppVeyor.Environment.Build.Number);
+    }
+    // var test = AppVeyor.Environment.Build.Number;
+    // version = AppVeyor.IsRunningOnAppVeyor ?
+    //                         $"0.0.{AppVeyor.Environment.Build.Number}" :
+    //                         "0.0.1";
 });
 
 ///////////////////////////////////////////////////////////////////////////////
