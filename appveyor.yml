@@ -13,5 +13,7 @@ environment:
     secure: BaxNg7nyxouWoEjrcpCdYQ==
 build_script:
 - ps: .\build.ps1
+artifacts:
+- path: artifacts/packages/*.nupkg
 test: off
 deploy: off
