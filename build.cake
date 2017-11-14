@@ -8,23 +8,9 @@ var packPath            = Directory("./src/unleash");
 var buildArtifacts      = Directory("./artifacts/packages");
 
 var isAppVeyor          = AppVeyor.IsRunningOnAppVeyor;
-var version             = "0.0.1";
-
-Setup(context =>
-{
-    context.Information("hello");
-    var test = "45";
-    var test2 = $"dette er: {test}";
-    if (AppVeyor.IsRunningOnAppVeyor)
-    {
-        context.Information("Running appveyor");
-        context.Information("Build number: " + AppVeyor.Environment.Build.Number);
-    }
-    // var test = AppVeyor.Environment.Build.Number;
-    // version = AppVeyor.IsRunningOnAppVeyor ?
-    //                         $"0.0.{AppVeyor.Environment.Build.Number}" :
-    //                         "0.0.1";
-});
+var version             = AppVeyor.IsRunningOnAppVeyor ?
+                             "0.0." + AppVeyor.Environment.Build.Number :
+                             "0.0.1";
 
 ///////////////////////////////////////////////////////////////////////////////
 // Clean
