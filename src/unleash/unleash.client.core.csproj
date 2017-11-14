@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Olav Nybø</Authors>
+    <PackageProjectUrl>https://github.com/onybo/unleash-client-core</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/onybo/unleash-client-core/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/onybo/unleash-client-core.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>asp.net core unleash feature-toggling</PackageTags>
+    <Description />
+    <Version>$(SemVer)</Version>
   </PropertyGroup>
 
   <ItemGroup>
