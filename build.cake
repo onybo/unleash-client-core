@@ -13,6 +13,8 @@ var version             = "0.0.1";
 Setup(context =>
 {
     context.Information("hello");
+    var test = "45";
+    var test2 = $"dette er: {test}";
     if (AppVeyor.IsRunningOnAppVeyor)
     {
         context.Information("Running appveyor");
