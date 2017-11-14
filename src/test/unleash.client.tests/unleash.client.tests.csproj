@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\unleash\unleash.client.core.csproj" />
+    <ProjectReference Include="..\..\unleash\unleash.client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

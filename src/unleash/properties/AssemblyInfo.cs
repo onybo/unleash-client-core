@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("unleash.client.core.tests")] 
+[assembly: InternalsVisibleTo("unleash.client.tests")] 
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
