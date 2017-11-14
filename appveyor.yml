@@ -9,6 +9,8 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 environment:
+  NUGETAPIKEY:
+    secure: BaxNg7nyxouWoEjrcpCdYQ==
 build_script:
 - ps: .\build.ps1
 test: off
