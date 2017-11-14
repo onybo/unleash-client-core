@@ -8,7 +8,14 @@ var packPath            = Directory("./src/unleash");
 var buildArtifacts      = Directory("./artifacts/packages");
 
 var isAppVeyor          = AppVeyor.IsRunningOnAppVeyor;
-var version             = "1.0.1";
+var version             = "0.0.1";
+
+Setup(context =>
+{
+    version = AppVeyor.IsRunningOnAppVeyor ?
+                            $"0.0.{AppVeyor.Environment.Build.Number}" :
+                            "0.0.1";
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 // Clean
