@@ -27,7 +27,7 @@ namespace Olav.Unleash.Client.Tests.Repository
             var unleashMetricService = new UnleashMetricServiceImpl(config, executor);
 
             A.CallTo(() => executor.SetInterval(
-                                    A<Func<object, Task>>.Ignored,
+                                    A<TimerCallback>.Ignored,
                                     A<long>.That.IsEqualTo(interval),
                                     A<long>.That.IsEqualTo(interval)))
                         .MustHaveHappened(Repeated.Exactly.Once);
@@ -78,13 +78,13 @@ namespace Olav.Unleash.Client.Tests.Repository
             var executor = A.Fake<IUnleashScheduledExecutor>();
             var sender = A.Fake<UnleashMetricsSender>();
 
-            var sendMetricsCallback = new Capture<Func<object, Task>>();
+            var sendMetricsCallback = new Capture<TimerCallback>();
 
             A.CallTo(() => executor.SetInterval(sendMetricsCallback, A<long>.Ignored, A<long>.Ignored)).Returns(new AutoResetEvent(false));
 
             var unleashMetricService = new UnleashMetricServiceImpl(config, sender, executor);
 
-            await sendMetricsCallback.Value.Invoke(null);
+            sendMetricsCallback.Value.Invoke(null);
             
             A.CallTo(() => sender.SendMetrics(
                                     A<ClientMetrics>.Ignored))
@@ -104,7 +104,7 @@ namespace Olav.Unleash.Client.Tests.Repository
             var executor = A.Fake<IUnleashScheduledExecutor>();
             var sender = A.Fake<UnleashMetricsSender>();
 
-            var sendMetricsCallback = new Capture<Func<object, Task>>();
+            var sendMetricsCallback = new Capture<TimerCallback>();
             A.CallTo(() => executor.SetInterval(sendMetricsCallback, A<long>.Ignored, A<long>.Ignored)).Returns(new AutoResetEvent(false));
 
             var clientMetricsArgumentCaptor = new Capture<ClientMetrics>();

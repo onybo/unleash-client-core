@@ -12,7 +12,7 @@ namespace Olav.Unleash.Client.Tests.Repository
 {
     internal class MockExecutor : IUnleashScheduledExecutor
     {
-        public AutoResetEvent SetInterval(Func<object, Task> commandFactory, long initialDelaySec, long periodSec)
+        public AutoResetEvent SetInterval(TimerCallback callback, long initialDelaySec, long periodSec)
         {
             return null;
         }
@@ -75,7 +75,7 @@ namespace Olav.Unleash.Client.Tests.Repository
             //init
             var executor = A.Fake<IUnleashScheduledExecutor>();
             //ArgumentCaptor<Runnable> runnableArgumentCaptor = ArgumentCaptor.forClass(Runnable.class);
-            var cmdFactory = new Capture<Func<object, Task>>();
+            var callback = new Capture<TimerCallback>();
 
 
             UnleashConfig config = new UnleashConfig.Builder()
@@ -85,13 +85,13 @@ namespace Olav.Unleash.Client.Tests.Repository
                     .Build();
 
             //run the toggle fetcher callback
-            A.CallTo(() => executor.SetInterval(cmdFactory, A<long>.Ignored, A<long>.Ignored)).Returns(new AutoResetEvent(false));
+            A.CallTo(() => executor.SetInterval(callback, A<long>.Ignored, A<long>.Ignored)).Returns(new AutoResetEvent(false));
 
             var toggleRepository = new FeatureToggleRepository(config, executor, toggleFetcher, toggleBackupHandler);
 
 
             A.CallTo(() => toggleFetcher.FetchToggles()).MustNotHaveHappened();
-            cmdFactory.Value(null);
+            callback.Value(null);
             A.CallTo(() => toggleBackupHandler.Read()).MustHaveHappened(Repeated.Exactly.Once);
             A.CallTo(() => toggleFetcher.FetchToggles()).MustHaveHappened(Repeated.Exactly.Once);
             Assert.True(toggleRepository.GetToggle("toggleFetcherCalled").IsEnabled);
