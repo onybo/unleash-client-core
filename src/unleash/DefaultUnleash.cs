@@ -22,7 +22,6 @@ namespace Olav.Unleash
                 };
 
         private static readonly UnknownStrategy UNKNOWN_STRATEGY = new UnknownStrategy();
-        private static readonly IUnleashScheduledExecutor unleashScheduledExecutor = new UnleashScheduledExecutorImpl();
 
         private readonly IUnleashMetricService _metricService;
         private readonly IToggleRepository _toggleRepository;
@@ -32,7 +31,7 @@ namespace Olav.Unleash
         {
             return new FeatureToggleRepository(
                     unleashConfig,
-                    unleashScheduledExecutor,
+                    new UnleashScheduledExecutorImpl(),
                     new HttpToggleFetcher(unleashConfig),
                     new ToggleBackupHandlerFile(unleashConfig));
         }
@@ -46,7 +45,7 @@ namespace Olav.Unleash
         {
             _toggleRepository = toggleRepository;
             _strategyMap = BuildStrategyMap(strategies);
-            _metricService = new UnleashMetricServiceImpl(unleashConfig, unleashScheduledExecutor);
+            _metricService = new UnleashMetricServiceImpl(unleashConfig, new UnleashScheduledExecutorImpl());
             _metricService.Register(new HashSet<string>(_strategyMap.Keys.ToList()));
         }
 

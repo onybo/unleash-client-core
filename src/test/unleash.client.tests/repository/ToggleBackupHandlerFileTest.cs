@@ -5,7 +5,7 @@ using Olav.Unleash.Repository;
 using Olav.Unleash.Util;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Repository
+namespace Olav.Unleash.Client.Tests.Repository
 {
 
 

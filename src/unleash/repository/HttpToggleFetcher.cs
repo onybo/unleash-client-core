@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Olav.Unleash.Util;
+using Serilog;
 
 namespace Olav.Unleash.Repository
 {
@@ -51,7 +52,15 @@ namespace Olav.Unleash.Repository
         {
             _etag = response.Headers.ETag?.Tag;
             var content = await response.Content.ReadAsStringAsync();
-            var toggles = JsonToggleParser.FromJson(content);
+            var toggles = new ToggleCollection();
+            try
+            {
+                toggles = JsonToggleParser.FromJson(content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("received toggles failed");
+            }
             return FeatureToggleResponse.Changed(toggles);
         }
     }

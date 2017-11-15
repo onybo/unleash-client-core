@@ -15,6 +15,8 @@ namespace Olav.Unleash.Metric
         //mutable
         private MetricsBucket _currentMetricsBucket;
 
+        private readonly IUnleashScheduledExecutor _unleashExecutor;
+
         public UnleashMetricServiceImpl(UnleashConfig unleashConfig,
             IUnleashScheduledExecutor executor)
             : this(unleashConfig, new UnleashMetricsSender(unleashConfig), executor)
@@ -30,8 +32,9 @@ namespace Olav.Unleash.Metric
             _unleashConfig = unleashConfig;
             _metricsInterval = unleashConfig.SendMetricsInterval;
             _unleashMetricsSender = unleashMetricsSender;
+            _unleashExecutor = executor;            
 
-            executor.SetInterval(s => SendMetrics(s), _metricsInterval, _metricsInterval);
+            executor.SetInterval(async s => await SendMetrics(s), _metricsInterval, _metricsInterval);
         }
 
         public async Task Register(HashSet<string> strategies)

@@ -48,6 +48,7 @@ namespace Olav.Unleash.Metric
             _unleashConfig = unleashConfig;
             var urls = unleashConfig.UnleashURLs;
             _baseURL = urls.BaseURL;
+            HttpClient.BaseAddress = _baseURL;
         }
 
         // static class DateTimeSerializer implements JsonSerializer<LocalDateTime> {
@@ -76,7 +77,7 @@ namespace Olav.Unleash.Metric
 
         private async Task<HttpStatusCode> Post(string url, Object o, string operation)
         {
-            HttpClient.BaseAddress = _baseURL;
+            
 
             var request = new HttpRequestMessage(HttpMethod.Post, UnleashURLs.FetchTogglesUri);
             UnleashConfig.SetRequestProperties(request.Headers, _unleashConfig);

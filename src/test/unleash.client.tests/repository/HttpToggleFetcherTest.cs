@@ -8,7 +8,7 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Repository
+namespace Olav.Unleash.Client.Tests.Repository
 {
     public class HttpToggleFetcherTest
     {

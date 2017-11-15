@@ -7,15 +7,16 @@ namespace Olav.Unleash.Util
     public class UnleashScheduledExecutorImpl : IUnleashScheduledExecutor
     {
         private Timer _timer;
+        private AutoResetEvent _autoEvent;
 
-        public AutoResetEvent SetInterval(Func<object, Task> commandFactory,
+        public AutoResetEvent SetInterval(TimerCallback callback,
                                                           long initialDelaySec,
                                                           long periodSec)
         {
-            var autoEvent = new AutoResetEvent(false);
+            _autoEvent = new AutoResetEvent(false);
 
-            _timer = new Timer(async (e) => {await commandFactory(e);}, autoEvent, initialDelaySec * 1000, periodSec * 1000);
-            return autoEvent;
+            _timer = new Timer(callback, _autoEvent, initialDelaySec * 1000, periodSec * 1000);
+            return _autoEvent;
         }
     }
 }

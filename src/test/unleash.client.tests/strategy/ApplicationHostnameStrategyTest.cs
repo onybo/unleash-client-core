@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Olav.Unleash.Strategy;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Strategy
+namespace Olav.Unleash.Client.Tests.Strategy
 {
     public class ApplicationHostnameStrategyTest
     {

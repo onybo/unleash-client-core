@@ -6,6 +6,6 @@ namespace Olav.Unleash.Util
 {
         public interface IUnleashScheduledExecutor 
         {
-                AutoResetEvent SetInterval(Func<object, Task> commandFactory, long initialDelaySec, long periodSec);
+                AutoResetEvent SetInterval(TimerCallback callback, long initialDelaySec, long periodSec);
         }    
 }

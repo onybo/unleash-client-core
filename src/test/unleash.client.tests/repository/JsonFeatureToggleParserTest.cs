@@ -4,7 +4,7 @@ using System.Linq;
 using Olav.Unleash.Repository;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Repository
+namespace Olav.Unleash.Client.Tests.Repository
 {
 
     public class JsonFeatureToggleParserTest

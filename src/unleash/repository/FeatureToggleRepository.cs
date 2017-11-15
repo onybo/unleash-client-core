@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Olav.Unleash.Util;
 using Serilog;
@@ -13,6 +14,8 @@ namespace Olav.Unleash.Repository
 
         private ToggleCollection _toggleCollection;
 
+        private IUnleashScheduledExecutor _executor;
+
         public FeatureToggleRepository(
                 UnleashConfig unleashConfig,
                 IUnleashScheduledExecutor executor,
@@ -25,11 +28,12 @@ namespace Olav.Unleash.Repository
 
             _toggleCollection = toggleBackupHandler.Read();
 
-            executor.SetInterval(s => UpdateToggles(s), 0, unleashConfig.FetchTogglesInterval);
+            _executor = executor;
+            _executor.SetInterval(s => UpdateToggles(s).Wait(), 0, unleashConfig.FetchTogglesInterval);
         }
 
         public async Task UpdateToggles(object state)
-        {
+        {            
             try
             {
                 var response = await _toggleFetcher.FetchToggles();

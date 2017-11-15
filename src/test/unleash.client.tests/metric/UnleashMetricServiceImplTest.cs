@@ -8,7 +8,7 @@ using Olav.Unleash.Metric;
 using Olav.Unleash.Util;
 using Xunit;
 
-namespace Olav.Unleash.Client.Core.Tests.Repository
+namespace Olav.Unleash.Client.Tests.Repository
 {
     public class UnleashMetricServiceImplTest
     {
