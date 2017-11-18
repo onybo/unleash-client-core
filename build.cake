@@ -77,7 +77,7 @@ Task("Build")
 // Then drop the XML test results file in the Artifacts folder at the root.
 ///////////////////////////////////////////////////////////////////////////////
 Task("Test")
-    //.IsDependentOn("Build")
+    .IsDependentOn("Build")
     .Does(() =>
 {
         var projects = GetFiles("./src/test/**/*tests.csproj");
@@ -116,8 +116,8 @@ Task("Pack")
 });
 
 Task("Default")
-//  .IsDependentOn("Build")
+  .IsDependentOn("Build")
   .IsDependentOn("Test");
-//  .IsDependentOn("Pack");
+  .IsDependentOn("Pack");
 
 RunTarget(target);
