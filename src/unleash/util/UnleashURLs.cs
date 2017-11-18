@@ -5,7 +5,7 @@ namespace Olav.Unleash.Util
 {
     public class UnleashURLs
     {
-        public const string FetchTogglesUri = "features";
+        public const string FetchTogglesUri = "client/features";
         public const string ClientMetricsURL = "client/metrics";
         public const string ClientRegisterURL = "client/register";
         public UnleashURLs(Uri unleashAPI)
