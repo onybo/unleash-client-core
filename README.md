@@ -1,7 +1,7 @@
 # The Unleash Client .net core
 
-<!-- [![Build Status](https://travis-ci.org/Unleash/unleash-client-java.svg?branch=master)](https://travis-ci.org/Unleash/unleash-client-java)
-[![Coverage Status](https://coveralls.io/repos/github/Unleash/unleash-client-java/badge.svg?branch=master)](https://coveralls.io/github/Unleash/unleash-client-java?branch=master) -->
+[![Build status](https://ci.appveyor.com/api/projects/status/cs4o9vjcgj9kv5es?svg=true)](https://ci.appveyor.com/project/onybo/unleash-client-core)
+[![NuGet Latest Stable https://www.nuget.org/packages/Unleash.Client](https://img.shields.io/nuget/v/Unleash.Client.svg)](https://www.nuget.org/packages/Unleash.Client)
 
 ## Getting started
 
