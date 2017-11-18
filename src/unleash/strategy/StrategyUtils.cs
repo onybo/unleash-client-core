@@ -1,4 +1,7 @@
 using System;
+using System.Security.Cryptography;
+using System.Text;
+using Murmur;
 
 namespace Olav.Unleash.Strategy
 {
@@ -7,18 +10,22 @@ namespace Olav.Unleash.Strategy
         private const int ONE_HUNDRED = 100;
 
         /**
-        * Takes to string inputs concat them, produce a hashCode and return a normalized value between 0 and 100;
+        * Takes to string inputs concat them, produce a hash and return a normalized value between 0 and 100;
         *
         * @param identifier
         * @param groupId
         * @return
         */
-        public static int GetNormalizedNumber(string identifier, string groupId) 
-        {
-            int hashCode = Math.Abs((groupId + ':' + identifier).GetHashCode());
-            return hashCode % ONE_HUNDRED + 1;
-        }
+        public static int GetNormalizedNumber(string identifier, string groupId) => 
+            GetNormalizedNumber(identifier, groupId, ONE_HUNDRED);
 
+        private static readonly HashAlgorithm Managed32 = MurmurHash.Create32(managed: true);
+        public static int GetNormalizedNumber(string identifier, string groupId, int normalizer) 
+        {
+            var value = Encoding.UTF8.GetBytes(groupId + ":" + identifier);
+            var hash = BitConverter.ToUInt32(Managed32.ComputeHash(value), 0);
+            return (int)(hash % normalizer) + 1;
+        }
         /**
         * Takes a numeric string value and converts it to a integer between 0 and 100.
         *
