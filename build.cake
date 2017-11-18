@@ -71,24 +71,29 @@ Task("Build")
 
 ///////////////////////////////////////////////////////////////////////////////
 // Test
+// Look under a 'Tests' folder and run dotnet test against all of those projects.
+// Then drop the XML test results file in the Artifacts folder at the root.
 ///////////////////////////////////////////////////////////////////////////////
 Task("Test")
-    .IsDependentOn("Restore")
-    .IsDependentOn("Clean")
+    .IsDependentOn("Build")
     .Does(() =>
 {
-    var settings = new DotNetCoreTestSettings
-    {
-        Configuration = configuration
-    };
-
-    var projects = GetFiles("./test/**/*.csproj");
-
-    foreach(var project in projects)
-	{
-        DotNetCoreTest(project.FullPath, settings);
-    }
+        var projects = GetFiles("./test/**/*tests.csproj");
+        foreach(var project in projects)
+        {
+            DotNetCoreTest(
+                project.GetDirectory().FullPath,
+                new DotNetCoreTestSettings()
+                {
+                    ArgumentCustomization = args => args
+                        .Append("-xml")
+                        .Append(artifactsDirectory.Path.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml"),
+                    Configuration = configuration,
+                    NoBuild = true
+                });
+        }
 });
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Pack
@@ -107,7 +112,6 @@ Task("Pack")
 
     DotNetCorePack(packPath, settings);
 });
-
 
 Task("Default")
   .IsDependentOn("Build")
