@@ -6,6 +6,8 @@ var configuration   = Argument<string>("configuration", "Release");
 ///////////////////////////////////////////////////////////////////////////////
 var packPath            = Directory("./src/unleash");
 var buildArtifacts      = Directory("./artifacts/packages");
+// A directory path to an Artifacts directory.
+var artifactsDirectory = Directory("./artifacts");
 
 var isAppVeyor          = AppVeyor.IsRunningOnAppVeyor;
 var version             = AppVeyor.IsRunningOnAppVeyor ?
@@ -18,7 +20,7 @@ var version             = AppVeyor.IsRunningOnAppVeyor ?
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectories(new DirectoryPath[] { buildArtifacts });
+    CleanDirectories(new DirectoryPath[] { buildArtifacts, artifactsDirectory });
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +64,7 @@ Task("Build")
     }
 
     // tests
-	projects = GetFiles("./test/**/*.csproj");
+	projects = GetFiles("./src/test/**/*.csproj");
 	foreach(var project in projects)
 	{
 	    DotNetCoreBuild(project.GetDirectory().FullPath, settings); 
@@ -75,10 +77,10 @@ Task("Build")
 // Then drop the XML test results file in the Artifacts folder at the root.
 ///////////////////////////////////////////////////////////////////////////////
 Task("Test")
-    .IsDependentOn("Build")
+    //.IsDependentOn("Build")
     .Does(() =>
 {
-        var projects = GetFiles("./test/**/*tests.csproj");
+        var projects = GetFiles("./src/test/**/*tests.csproj");
         foreach(var project in projects)
         {
             DotNetCoreTest(
@@ -86,8 +88,8 @@ Task("Test")
                 new DotNetCoreTestSettings()
                 {
                     ArgumentCustomization = args => args
-                        .Append("-xml")
-                        .Append(artifactsDirectory.Path.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml"),
+                        .Append("--logger \"trx;LogFileName=" 
+                            + artifactsDirectory.Path.CombineWithFilePath(project.GetFilenameWithoutExtension()).FullPath + ".xml\""),
                     Configuration = configuration,
                     NoBuild = true
                 });
@@ -114,8 +116,8 @@ Task("Pack")
 });
 
 Task("Default")
-  .IsDependentOn("Build")
-  .IsDependentOn("Test")
-  .IsDependentOn("Pack");
+//  .IsDependentOn("Build")
+  .IsDependentOn("Test");
+//  .IsDependentOn("Pack");
 
 RunTarget(target);
