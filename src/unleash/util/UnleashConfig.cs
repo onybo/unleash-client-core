@@ -10,8 +10,8 @@ namespace Olav.Unleash.Util
 {
     public class UnleashConfig
     {
-        private const string UNLEASH_APP_NAME_HEADER = "UNLEASH-APPNAME";
-        private const string UNLEASH_INSTANCE_ID_HEADER = "UNLEASH-INSTANCEID";
+        internal const string UNLEASH_APP_NAME_HEADER = "UNLEASH-APPNAME";
+        internal const string UNLEASH_INSTANCE_ID_HEADER = "UNLEASH-INSTANCEID";
 
         public UnleashConfig(
                 Uri unleashAPI,
