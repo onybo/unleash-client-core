@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Olav.Unleash.Logging;
 using Olav.Unleash.Util;
-using Serilog;
 
 namespace Olav.Unleash.Repository
 {
@@ -15,6 +15,9 @@ namespace Olav.Unleash.Repository
         private ToggleCollection _toggleCollection;
 
         private IUnleashScheduledExecutor _executor;
+
+        private static readonly ILog Logger = LogProvider.For<FeatureToggleRepository>();
+
 
         public FeatureToggleRepository(
                 UnleashConfig unleashConfig,
@@ -45,7 +48,7 @@ namespace Olav.Unleash.Repository
             }
             catch (Exception e)
             {
-                Log.Warning("Could not refresh feature toggles", e);
+                Logger.WarnException("Could not refresh feature toggles", e);
             }
         }
 

@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Olav.Unleash.Logging;
 using Olav.Unleash.Util;
-using Serilog;
 
 namespace Olav.Unleash.Repository
 {
@@ -16,6 +16,8 @@ namespace Olav.Unleash.Repository
         private UnleashConfig _unleashConfig;
 
         private static readonly HttpClient HttpClient;
+
+        private static readonly ILog Logger = LogProvider.For<HttpToggleFetcher>();
 
         static HttpToggleFetcher()
         {
@@ -59,7 +61,7 @@ namespace Olav.Unleash.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine("received toggles failed");
+                Logger.WarnException("received toggles failed", ex);
             }
             return FeatureToggleResponse.Changed(toggles);
         }

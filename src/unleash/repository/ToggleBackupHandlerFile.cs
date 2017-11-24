@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Olav.Unleash.Logging;
 using Olav.Unleash.Util;
-using Serilog;
 
 namespace Olav.Unleash.Repository
 {
     public class ToggleBackupHandlerFile : IToggleBackupHandler
     {
         private readonly string _backupFile;
+        private static readonly ILog Logger = LogProvider.For<ToggleBackupHandlerFile>();
 
         public ToggleBackupHandlerFile(UnleashConfig config)
         {
@@ -18,7 +19,7 @@ namespace Olav.Unleash.Repository
 
         public ToggleCollection Read()
         {
-            Log.Information("Unleash will try to load feature toggle states from temporary backup");
+            Logger.Info("Unleash will try to load feature toggle states from temporary backup");
             try
             {
                 var json = File.ReadAllText(_backupFile);
@@ -26,36 +27,36 @@ namespace Olav.Unleash.Repository
             }
             catch (FileNotFoundException)
             {
-                Log.Warning(" Unleash could not find the backup-file '" + _backupFile + "'. \n" +
+                Logger.Warn(" Unleash could not find the backup-file '" + _backupFile + "'. \n" +
                         "This is expected behavior the first time unleash runs in a new environment.");
             }
             catch (UnauthorizedAccessException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Do not have the required permission", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Do not have the required permission", e, _backupFile);
             }
             catch (PathTooLongException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Path is more than 260 characters", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Path is more than 260 characters", e, _backupFile);
             }
             catch (ArgumentNullException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Path is null", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Path is null", e, _backupFile);
             }
             catch (ArgumentException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Invalid path", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Invalid path", e, _backupFile);
             }
             catch (DirectoryNotFoundException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Directory not found", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Directory not found", e, _backupFile);
             }
             catch (NotSupportedException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{File}'. Path is in an invalid format", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{File}'. Path is in an invalid format", e, _backupFile);
             }
             catch (JsonException e)
             {
-                Log.Warning(e, "Failed to read backup file:'{}'", _backupFile);
+                Logger.WarnException("Failed to read backup file:'{}'", e, _backupFile);
             }
 
             return ToggleCollection.EmptyCollection;
@@ -74,7 +75,7 @@ namespace Olav.Unleash.Repository
             }
             catch (IOException e)
             {
-                Log.Warning(e, "Unleash was unable to backup feature toggles to file: {}", _backupFile);
+                Logger.WarnException("Unleash was unable to backup feature toggles to file: {}", e, _backupFile);
             }
         }
     }

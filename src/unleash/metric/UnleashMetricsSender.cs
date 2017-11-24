@@ -5,8 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Olav.Unleash.Logging;
 using Olav.Unleash.Util;
-using Serilog;
 
 namespace Olav.Unleash.Metric
 {
@@ -18,6 +18,8 @@ namespace Olav.Unleash.Metric
         private readonly Uri _baseURL;
 
         private static readonly HttpClient HttpClient;
+
+        private static readonly ILog Logger = LogProvider.For<UnleashMetricsSender>();
 
         static UnleashMetricsSender()
         {
@@ -87,7 +89,7 @@ namespace Olav.Unleash.Metric
             var result = await HttpClient.SendAsync(request);
 
             if (!result.IsSuccessStatusCode)
-                Log.Warning("failed to {Operation}: statuscode {StatusCode}", operation, result.StatusCode);
+                Logger.WarnFormat("failed to {Operation}: statuscode {StatusCode}", operation, result.StatusCode);
             return result.StatusCode;
         }
     }

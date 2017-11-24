@@ -2,19 +2,14 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Serilog;
+using Olav.Unleash.Logging;
 
 namespace Olav.Unleash.Repository
 {
-
-
-    // import com.google.gson.Gson;
-    // import com.google.gson.GsonBuilder;
-
-    // import java.io.Reader;
-
     public static class JsonToggleParser
     {
+        private static readonly ILog Logger = LogProvider.GetLogger("JsonToggleParser");
+
         public static ToggleCollection FromJson(string jsonString)
         {
             if (string.IsNullOrWhiteSpace(jsonString))
@@ -37,7 +32,7 @@ namespace Olav.Unleash.Repository
 
             if (!json.TryGetValue("features", out var featureTogglesToken))
             {
-                Log.Warning("Features not found in json");
+                Logger.Warn("Features not found in json");
                 return ToggleCollection.EmptyCollection;
             }
             var featureToggles = new List<FeatureToggle>();
@@ -59,7 +54,7 @@ namespace Olav.Unleash.Repository
         {
             if (!json.TryGetValue("features", out var featureTogglesToken))
             {
-                Log.Warning("Features not found in json");
+                Logger.Warn("Features not found in json");
                 throw new Exception("Features in json were expected");
             }
 

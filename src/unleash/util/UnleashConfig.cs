@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
-using Serilog;
+using Olav.Unleash.Logging;
 
 namespace Olav.Unleash.Util
 {
@@ -98,6 +98,8 @@ namespace Olav.Unleash.Util
             private long _sendMetricsInterval = 60;
             private bool _disableMetrics = false;
 
+            private static readonly ILog Logger = LogProvider.For<Builder>();
+
             static string GetDefaultInstanceId()
             {
                 string hostName = "";
@@ -107,7 +109,7 @@ namespace Olav.Unleash.Util
                 }
                 catch (SocketException e)
                 {
-                    Log.Warning(e, "Failed to resolve hostname");
+                    Logger.Warn(e, "Failed to resolve hostname");
                 }
                 return hostName + "generated-" + (new Random().Next(1000000));
             }
